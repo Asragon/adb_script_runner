@@ -1,0 +1,26 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "ADB Script Runner",
+  "@appTitle": {"description": "Application title shown in the app bar"},
+
+  "toggleTheme": "Toggle light/dark theme",
+
+  "rootFoldersTitle": "Script folders",
+  "addFolder": "Add folder",
+  "noFoldersYet": "No folders added yet. Use \"Add folder\" to get started.",
+
+  "scriptsTitle": "Scripts",
+  "selectFolderPrompt": "Select a root folder above to load its scripts",
+  "noScriptsFound": "No scripts found in this folder",
+  "errorLoadingScripts": "Error loading scripts",
+  "generalGroup": "General",
+
+  "noScriptSelected": "Select a script from the list to see its details",
+  "parametersLabel": "Parameters",
+  "runScript": "Run",
+
+  "consoleTitle": "Console",
+  "clearConsole": "Clear console",
+  "consoleEmpty": "No commands executed yet"
+}

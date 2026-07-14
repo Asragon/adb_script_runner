@@ -1,0 +1,25 @@
+{
+  "@@locale": "it",
+
+  "appTitle": "ADB Script Runner",
+
+  "toggleTheme": "Cambia tema chiaro/scuro",
+
+  "rootFoldersTitle": "Cartelle script",
+  "addFolder": "Aggiungi cartella",
+  "noFoldersYet": "Nessuna cartella aggiunta. Usa \"Aggiungi cartella\" per iniziare.",
+
+  "scriptsTitle": "Script",
+  "selectFolderPrompt": "Seleziona una cartella radice sopra per caricare gli script",
+  "noScriptsFound": "Nessuno script trovato in questa cartella",
+  "errorLoadingScripts": "Errore nel caricamento degli script",
+  "generalGroup": "Generale",
+
+  "noScriptSelected": "Seleziona uno script dalla lista per vederne i dettagli",
+  "parametersLabel": "Parametri",
+  "runScript": "Esegui",
+
+  "consoleTitle": "Console",
+  "clearConsole": "Pulisci console",
+  "consoleEmpty": "Nessun comando ancora eseguito"
+}

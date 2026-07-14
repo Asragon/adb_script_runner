@@ -1,0 +1,38 @@
+name: adb_script_runner
+description: Applicazione desktop Flutter per sfogliare ed eseguire script ADB organizzati in cartelle.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.19.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Gestione dello stato
+  flutter_riverpod: ^2.6.1
+
+  # Selezione cartelle da filesystem
+  file_picker: ^11.0.2
+
+  # Persistenza locale dei percorsi delle root folder
+  shared_preferences: ^2.2.3
+
+  # Utility per manipolazione path
+  path: ^1.9.0
+
+  # Supporto internazionalizzazione
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
