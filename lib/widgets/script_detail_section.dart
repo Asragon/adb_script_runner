@@ -17,7 +17,8 @@ class ScriptDetailSection extends ConsumerStatefulWidget {
   const ScriptDetailSection({super.key});
 
   @override
-  ConsumerState<ScriptDetailSection> createState() => _ScriptDetailSectionState();
+  ConsumerState<ScriptDetailSection> createState() =>
+      _ScriptDetailSectionState();
 }
 
 class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
@@ -50,19 +51,22 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
   Future<void> _run(ScriptModel script, List<String> params) async {
     final consoleNotifier = ref.read(consoleProvider.notifier);
     final command = _runner.buildCommandPreview(script, params);
-    final entryId = consoleNotifier.startEntry(scriptName: script.name, command: command);
+    final entryId =
+        consoleNotifier.startEntry(scriptName: script.name, command: command);
 
     try {
       final process = await _runner.run(script, params);
 
       process.stdout.transform(const SystemEncoding().decoder).listen((data) {
         for (final line in data.split('\n')) {
-          if (line.trim().isNotEmpty) consoleNotifier.appendOutput(entryId, line);
+          if (line.trim().isNotEmpty)
+            consoleNotifier.appendOutput(entryId, line);
         }
       });
       process.stderr.transform(const SystemEncoding().decoder).listen((data) {
         for (final line in data.split('\n')) {
-          if (line.trim().isNotEmpty) consoleNotifier.appendOutput(entryId, '[stderr] $line');
+          if (line.trim().isNotEmpty)
+            consoleNotifier.appendOutput(entryId, '[stderr] $line');
         }
       });
 
@@ -114,23 +118,28 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
                   const SizedBox(height: 4),
                   Text(
                     script.path,
-                    style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: theme.hintColor),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     script.body,
-                    style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: theme.hintColor),
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 12),
                   if (script.hasParameters) ...[
-                    Text(l10n.parametersLabel, style: theme.textTheme.labelMedium),
+                    Text(l10n.parametersLabel,
+                        style: theme.textTheme.labelMedium),
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 12,
                       runSpacing: 8,
-                      children: _controllersFor(script).asMap().entries.map((entry) {
-                        final placeholder = script.parameterPlaceholders[entry.key];
+                      children:
+                          _controllersFor(script).asMap().entries.map((entry) {
+                        final placeholder =
+                            script.parameterPlaceholders[entry.key];
                         return SizedBox(
                           width: 150,
                           child: TextField(
@@ -146,7 +155,8 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
                     alignment: Alignment.centerRight,
                     child: FilledButton.icon(
                       onPressed: () {
-                        final params = _controllersFor(script).map((c) => c.text).toList();
+                        final params =
+                            _controllersFor(script).map((c) => c.text).toList();
                         _run(script, params);
                       },
                       icon: const Icon(Icons.play_arrow, size: 18),

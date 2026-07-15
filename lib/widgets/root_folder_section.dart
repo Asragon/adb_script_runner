@@ -54,35 +54,38 @@ class RootFolderSection extends ConsumerWidget {
                           style: theme.textTheme.bodySmall,
                         ),
                       )
-                    : ListView.builder(
-                        itemCount: state.folders.length,
-                        itemBuilder: (context, index) {
-                          final folder = state.folders[index];
-                          final isActive = folder.path == state.activeFolderPath;
+                    : Material(
+                        type: MaterialType.transparency,
+                        child: ListView.builder(
+                          itemCount: state.folders.length,
+                          itemBuilder: (context, index) {
+                            final folder = state.folders[index];
+                            final isActive = folder.path == state.activeFolderPath;
 
-                          return ListTile(
-                            dense: true,
-                            visualDensity: VisualDensity.compact,
-                            selected: isActive,
-                            selectedTileColor: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
-                            leading: Icon(
-                              isActive ? Icons.radio_button_checked : Icons.radio_button_off,
-                              size: 18,
-                              color: isActive ? theme.colorScheme.primary : null,
-                            ),
-                            title: Text(folder.name, overflow: TextOverflow.ellipsis),
-                            subtitle: Text(
-                              folder.path,
-                              style: const TextStyle(fontSize: 10),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.close, size: 16),
-                              onPressed: () => ref.read(rootFoldersProvider.notifier).removeFolder(folder.path),
-                            ),
-                            onTap: () => ref.read(rootFoldersProvider.notifier).setActive(folder.path),
-                          );
-                        },
+                            return ListTile(
+                              dense: true,
+                              visualDensity: VisualDensity.compact,
+                              selected: isActive,
+                              selectedTileColor: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+                              leading: Icon(
+                                isActive ? Icons.radio_button_checked : Icons.radio_button_off,
+                                size: 18,
+                                color: isActive ? theme.colorScheme.primary : null,
+                              ),
+                              title: Text(folder.name, overflow: TextOverflow.ellipsis),
+                              subtitle: Text(
+                                folder.path,
+                                style: const TextStyle(fontSize: 10),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.close, size: 16),
+                                onPressed: () => ref.read(rootFoldersProvider.notifier).removeFolder(folder.path),
+                              ),
+                              onTap: () => ref.read(rootFoldersProvider.notifier).setActive(folder.path),
+                            );
+                          },
+                        ),
                       ),
           ),
         ],

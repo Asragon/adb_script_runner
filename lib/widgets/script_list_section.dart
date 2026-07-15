@@ -93,23 +93,26 @@ class _GroupedList extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final selected = ref.watch(selectedScriptProvider);
 
-    return ListView.builder(
-      itemCount: groups.length,
-      itemBuilder: (context, index) {
-        final group = groups[index];
-        final displayName = group.name.isEmpty ? l10n.generalGroup : group.name;
+    return Material(
+      type: MaterialType.transparency,
+      child: ListView.builder(
+        itemCount: groups.length,
+        itemBuilder: (context, index) {
+          final group = groups[index];
+          final displayName = group.name.isEmpty ? l10n.generalGroup : group.name;
 
-        return ExpansionTile(
-          initiallyExpanded: true,
-          dense: true,
-          leading: const Icon(Icons.folder, size: 18),
-          title: Text(displayName, style: const TextStyle(fontWeight: FontWeight.w600)),
-          children: group.scripts.map((script) {
-            final isSelected = selected?.path == script.path;
-            return _ScriptTile(script: script, isSelected: isSelected, indent: true);
-          }).toList(),
-        );
-      },
+          return ExpansionTile(
+            initiallyExpanded: true,
+            dense: true,
+            leading: const Icon(Icons.folder, size: 18),
+            title: Text(displayName, style: const TextStyle(fontWeight: FontWeight.w600)),
+            children: group.scripts.map((script) {
+              final isSelected = selected?.path == script.path;
+              return _ScriptTile(script: script, isSelected: isSelected, indent: true);
+            }).toList(),
+          );
+        },
+      ),
     );
   }
 }
@@ -123,13 +126,16 @@ class _FlatList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(selectedScriptProvider);
 
-    return ListView.builder(
-      itemCount: scripts.length,
-      itemBuilder: (context, index) {
-        final script = scripts[index];
-        final isSelected = selected?.path == script.path;
-        return _ScriptTile(script: script, isSelected: isSelected, indent: false);
-      },
+    return Material(
+      type: MaterialType.transparency,
+      child: ListView.builder(
+        itemCount: scripts.length,
+        itemBuilder: (context, index) {
+          final script = scripts[index];
+          final isSelected = selected?.path == script.path;
+          return _ScriptTile(script: script, isSelected: isSelected, indent: false);
+        },
+      ),
     );
   }
 }
