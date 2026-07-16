@@ -110,6 +110,18 @@ abstract class AppLocalizations {
   /// **'Toggle light/dark theme'**
   String get toggleTheme;
 
+  /// No description provided for @switchToItalian.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Italian'**
+  String get switchToItalian;
+
+  /// No description provided for @switchToEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to English'**
+  String get switchToEnglish;
+
   /// No description provided for @rootFoldersTitle.
   ///
   /// In en, this message translates to:

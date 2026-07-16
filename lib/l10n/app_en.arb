@@ -6,6 +6,9 @@
 
   "toggleTheme": "Toggle light/dark theme",
 
+  "switchToItalian": "Switch to Italian",
+  "switchToEnglish": "Switch to English",
+
   "rootFoldersTitle": "Script folders",
   "addFolder": "Add folder",
   "noFoldersYet": "No folders added yet. Use \"Add folder\" to get started.",

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme/app_theme.dart';
 import 'l10n/generated/app_localizations.dart';
+import 'providers/locale_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/home_screen.dart';
 
@@ -13,6 +14,7 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final locale = ref.watch(localeProvider);
 
     return MaterialApp(
       title: 'ADB Script Runner',
@@ -21,9 +23,12 @@ class App extends ConsumerWidget {
       darkTheme: AppTheme.dark(),
       themeMode: themeMode,
 
-      // Multilingua: al momento IT/EN. Per aggiungere una lingua basta
-      // creare lib/l10n/app_<locale>.arb e rilanciare `flutter gen-l10n`
-      // (o `flutter run`, dato che `generate: true` in pubspec.yaml).
+      // Multilingua: al momento IT/EN, selezionabile in tempo reale
+      // tramite LanguageSelector (vedi localeProvider). Per aggiungere
+      // una lingua basta creare lib/l10n/app_<locale>.arb e rilanciare
+      // `flutter gen-l10n` (o `flutter run`, dato che `generate: true`
+      // in pubspec.yaml).
+      locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

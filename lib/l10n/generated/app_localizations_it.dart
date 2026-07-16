@@ -15,6 +15,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get toggleTheme => 'Cambia tema chiaro/scuro';
 
   @override
+  String get switchToItalian => 'Passa all\'italiano';
+
+  @override
+  String get switchToEnglish => 'Passa all\'inglese';
+
+  @override
   String get rootFoldersTitle => 'Cartelle script';
 
   @override

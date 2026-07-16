@@ -5,6 +5,9 @@
 
   "toggleTheme": "Cambia tema chiaro/scuro",
 
+  "switchToItalian": "Passa all'italiano",
+  "switchToEnglish": "Passa all'inglese",
+
   "rootFoldersTitle": "Cartelle script",
   "addFolder": "Aggiungi cartella",
   "noFoldersYet": "Nessuna cartella aggiunta. Usa \"Aggiungi cartella\" per iniziare.",

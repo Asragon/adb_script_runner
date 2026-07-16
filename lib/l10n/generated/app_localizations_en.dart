@@ -15,6 +15,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toggleTheme => 'Toggle light/dark theme';
 
   @override
+  String get switchToItalian => 'Switch to Italian';
+
+  @override
+  String get switchToEnglish => 'Switch to English';
+
+  @override
   String get rootFoldersTitle => 'Script folders';
 
   @override

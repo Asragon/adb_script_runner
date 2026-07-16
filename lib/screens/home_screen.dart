@@ -4,13 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/console_section.dart';
+import '../widgets/language_selector.dart';
 import '../widgets/root_folder_section.dart';
 import '../widgets/script_detail_section.dart';
 import '../widgets/script_list_section.dart';
 
 /// Layout principale:
 ///
-/// ┌─────────────────────────────┬───────────────────┐
+/// ┌─────────────────────────────────────────────────┐
+/// │ Language selector                                │
+/// ├─────────────────────────────┬───────────────────┤
 /// │ Root folder section (top)   │                    │
 /// ├─────────────────────────────┤                    │
 /// │ Script list section (mid)   │  Console section    │
@@ -31,33 +34,45 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
             tooltip: l10n.toggleTheme,
-            icon: Icon(themeMode == ThemeMode.dark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
+            icon: Icon(themeMode == ThemeMode.dark
+                ? Icons.light_mode_outlined
+                : Icons.dark_mode_outlined),
             onPressed: () {
               final notifier = ref.read(themeModeProvider.notifier);
-              notifier.state = themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+              notifier.state = themeMode == ThemeMode.dark
+                  ? ThemeMode.light
+                  : ThemeMode.dark;
             },
           ),
           const SizedBox(width: 8),
         ],
       ),
-      body: const Row(
+      body: const Column(
         children: [
+          LanguageSelector(),
+          Divider(height: 1),
           Expanded(
-            flex: 5,
-            child: Column(
+            child: Row(
               children: [
-                RootFolderSection(),
-                Divider(height: 1),
-                Expanded(child: ScriptListSection()),
-                Divider(height: 1),
-                ScriptDetailSection(),
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: [
+                      RootFolderSection(),
+                      Divider(height: 1),
+                      Expanded(child: ScriptListSection()),
+                      Divider(height: 1),
+                      ScriptDetailSection(),
+                    ],
+                  ),
+                ),
+                VerticalDivider(width: 1),
+                Expanded(
+                  flex: 4,
+                  child: ConsoleSection(),
+                ),
               ],
             ),
-          ),
-          VerticalDivider(width: 1),
-          Expanded(
-            flex: 4,
-            child: ConsoleSection(),
           ),
         ],
       ),
