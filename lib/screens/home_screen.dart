@@ -56,7 +56,7 @@ class HomeScreen extends ConsumerWidget {
             child: Row(
               children: [
                 Expanded(
-                  flex: 5,
+                  flex: 40,
                   child: Column(
                     children: [
                       RootFolderSection(),
@@ -69,7 +69,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 VerticalDivider(width: 1),
                 Expanded(
-                  flex: 4,
+                  flex: 60,
                   child: ConsoleSection(),
                 ),
               ],
