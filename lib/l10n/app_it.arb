@@ -24,5 +24,12 @@
 
   "consoleTitle": "Console",
   "clearConsole": "Pulisci console",
-  "consoleEmpty": "Nessun comando ancora eseguito"
+  "consoleEmpty": "Nessun comando ancora eseguito",
+
+  "selectDeviceTooltip": "Seleziona device",
+  "noDeviceConnected": "Nessun device connesso",
+  "adbNotFound": "adb non trovato nel PATH",
+  "deviceUnauthorized": "non autorizzato",
+  "deviceOffline": "offline",
+  "deviceStateOther": "sconosciuto"
 }

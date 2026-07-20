@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/generated/app_localizations.dart';
 import '../providers/locale_provider.dart';
+import 'device_selector.dart';
 
 /// Barra sottile tra l'AppBar e il contenuto principale: due bandiere
 /// (IT/EN) che cambiano la lingua dell'app in tempo reale. Le bandiere
@@ -22,20 +23,25 @@ class LanguageSelector extends ConsumerWidget {
       color: theme.colorScheme.surfaceContainerLow,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _FlagButton(
-            painter: const _ItalyFlagPainter(),
-            tooltip: l10n.switchToItalian,
-            selected: locale.languageCode == 'it',
-            onTap: () => ref.read(localeProvider.notifier).state = const Locale('it'),
-          ),
-          const SizedBox(width: 4),
-          _FlagButton(
-            painter: const _UkFlagPainter(),
-            tooltip: l10n.switchToEnglish,
-            selected: locale.languageCode == 'en',
-            onTap: () => ref.read(localeProvider.notifier).state = const Locale('en'),
+          const DeviceSelector(),
+          Row(
+            children: [
+              _FlagButton(
+                painter: const _ItalyFlagPainter(),
+                tooltip: l10n.switchToItalian,
+                selected: locale.languageCode == 'it',
+                onTap: () => ref.read(localeProvider.notifier).state = const Locale('it'),
+              ),
+              const SizedBox(width: 4),
+              _FlagButton(
+                painter: const _UkFlagPainter(),
+                tooltip: l10n.switchToEnglish,
+                selected: locale.languageCode == 'en',
+                onTap: () => ref.read(localeProvider.notifier).state = const Locale('en'),
+              ),
+            ],
           ),
         ],
       ),

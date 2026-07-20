@@ -205,6 +205,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No commands executed yet'**
   String get consoleEmpty;
+
+  /// No description provided for @selectDeviceTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select device'**
+  String get selectDeviceTooltip;
+
+  /// No description provided for @noDeviceConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'No device connected'**
+  String get noDeviceConnected;
+
+  /// No description provided for @adbNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'adb not found in PATH'**
+  String get adbNotFound;
+
+  /// No description provided for @deviceUnauthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'unauthorized'**
+  String get deviceUnauthorized;
+
+  /// No description provided for @deviceOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'offline'**
+  String get deviceOffline;
+
+  /// No description provided for @deviceStateOther.
+  ///
+  /// In en, this message translates to:
+  /// **'unknown'**
+  String get deviceStateOther;
 }
 
 class _AppLocalizationsDelegate

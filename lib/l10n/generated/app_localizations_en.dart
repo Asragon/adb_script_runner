@@ -64,4 +64,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consoleEmpty => 'No commands executed yet';
+
+  @override
+  String get selectDeviceTooltip => 'Select device';
+
+  @override
+  String get noDeviceConnected => 'No device connected';
+
+  @override
+  String get adbNotFound => 'adb not found in PATH';
+
+  @override
+  String get deviceUnauthorized => 'unauthorized';
+
+  @override
+  String get deviceOffline => 'offline';
+
+  @override
+  String get deviceStateOther => 'unknown';
 }

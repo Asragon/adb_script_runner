@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/generated/app_localizations.dart';
 import '../models/script_model.dart';
+import '../providers/adb_devices_provider.dart';
 import '../providers/console_provider.dart';
 import '../providers/selected_script_provider.dart';
 import '../services/script_runner_service.dart';
@@ -48,14 +49,14 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
     super.dispose();
   }
 
-  Future<void> _run(ScriptModel script, List<String> params) async {
+  Future<void> _run(ScriptModel script, List<String> params, String deviceSerial) async {
     final consoleNotifier = ref.read(consoleProvider.notifier);
     final command = _runner.buildCommandPreview(script, params);
     final entryId =
         consoleNotifier.startEntry(scriptName: script.name, command: command);
 
     try {
-      final process = await _runner.run(script, params);
+      final process = await _runner.run(script, params, deviceSerial: deviceSerial);
 
       process.stdout.transform(const SystemEncoding().decoder).listen((data) {
         for (final line in data.split('\n')) {
@@ -78,11 +79,32 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
     }
   }
 
+  Widget _buildRunButton(
+    AppLocalizations l10n,
+    ScriptModel script,
+    String? deviceSerial,
+  ) {
+    final button = FilledButton.icon(
+      onPressed: deviceSerial == null
+          ? null
+          : () {
+              final params = _controllersFor(script).map((c) => c.text).toList();
+              _run(script, params, deviceSerial);
+            },
+      icon: const Icon(Icons.play_arrow, size: 18),
+      label: Text(l10n.runScript),
+    );
+
+    if (deviceSerial != null) return button;
+    return Tooltip(message: l10n.noDeviceConnected, child: button);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final script = ref.watch(selectedScriptProvider);
+    final deviceSerial = ref.watch(adbDevicesProvider.select((s) => s.selectedSerial));
 
     return Container(
       constraints: const BoxConstraints(minHeight: 170, maxHeight: 260),
@@ -153,15 +175,7 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
                   ],
                   Align(
                     alignment: Alignment.centerRight,
-                    child: FilledButton.icon(
-                      onPressed: () {
-                        final params =
-                            _controllersFor(script).map((c) => c.text).toList();
-                        _run(script, params);
-                      },
-                      icon: const Icon(Icons.play_arrow, size: 18),
-                      label: Text(l10n.runScript),
-                    ),
+                    child: _buildRunButton(l10n, script, deviceSerial),
                   ),
                 ],
               ),

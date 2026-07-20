@@ -25,5 +25,12 @@
 
   "consoleTitle": "Console",
   "clearConsole": "Clear console",
-  "consoleEmpty": "No commands executed yet"
+  "consoleEmpty": "No commands executed yet",
+
+  "selectDeviceTooltip": "Select device",
+  "noDeviceConnected": "No device connected",
+  "adbNotFound": "adb not found in PATH",
+  "deviceUnauthorized": "unauthorized",
+  "deviceOffline": "offline",
+  "deviceStateOther": "unknown"
 }
