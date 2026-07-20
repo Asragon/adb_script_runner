@@ -170,6 +170,24 @@ abstract class AppLocalizations {
   /// **'General'**
   String get generalGroup;
 
+  /// No description provided for @searchScriptsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search scripts'**
+  String get searchScriptsHint;
+
+  /// No description provided for @clearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get clearSearch;
+
+  /// No description provided for @noScriptsMatchSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'No scripts match your search'**
+  String get noScriptsMatchSearch;
+
   /// No description provided for @noScriptSelected.
   ///
   /// In en, this message translates to:

@@ -1,25 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/utils/run_script.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../models/script_group.dart';
 import '../models/script_model.dart';
+import '../providers/adb_devices_provider.dart';
 import '../providers/root_folders_provider.dart';
+import '../providers/script_search_provider.dart';
 import '../providers/scripts_provider.dart';
 import '../providers/selected_script_provider.dart';
 
 /// Center-left section: shows the scripts of the active root folder,
-/// either grouped by subfolder or as a flat list.
-class ScriptListSection extends ConsumerWidget {
+/// either grouped by subfolder or as a flat list. A search field in the
+/// header filters scripts by name once at least two characters are
+/// typed.
+class ScriptListSection extends ConsumerStatefulWidget {
   const ScriptListSection({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ScriptListSection> createState() => _ScriptListSectionState();
+}
+
+class _ScriptListSectionState extends ConsumerState<ScriptListSection> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    ref.read(scriptSearchQueryProvider.notifier).state = value;
+    setState(() {});
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    ref.read(scriptSearchQueryProvider.notifier).state = '';
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final scriptsAsync = ref.watch(scriptsProvider);
     final viewMode = ref.watch(scriptListViewModeProvider);
     final activeFolder = ref.watch(rootFoldersProvider).activeFolderPath;
+    final searchQuery = ref.watch(scriptSearchQueryProvider);
+    final effectiveQuery =
+        searchQuery.trim().length >= 2 ? searchQuery.trim().toLowerCase() : '';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,6 +63,28 @@ class ScriptListSection extends ConsumerWidget {
               Icon(Icons.terminal, size: 18, color: theme.colorScheme.primary),
               const SizedBox(width: 8),
               Text(l10n.scriptsTitle, style: theme.textTheme.titleSmall),
+              const SizedBox(width: 12),
+              SizedBox(
+                width: 160,
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: _onSearchChanged,
+                  style: theme.textTheme.bodySmall,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                    hintText: l10n.searchScriptsHint,
+                    prefixIcon: const Icon(Icons.search, size: 16),
+                    suffixIcon: _searchController.text.isEmpty
+                        ? null
+                        : IconButton(
+                            icon: const Icon(Icons.clear, size: 14),
+                            tooltip: l10n.clearSearch,
+                            onPressed: _clearSearch,
+                          ),
+                  ),
+                ),
+              ),
               const Spacer(),
               ToggleButtons(
                 constraints: const BoxConstraints(minHeight: 30, minWidth: 38),
@@ -41,7 +95,9 @@ class ScriptListSection extends ConsumerWidget {
                 ],
                 onPressed: (index) {
                   ref.read(scriptListViewModeProvider.notifier).state =
-                      index == 0 ? ScriptListViewMode.grouped : ScriptListViewMode.flat;
+                      index == 0
+                          ? ScriptListViewMode.grouped
+                          : ScriptListViewMode.flat;
                 },
                 children: const [
                   Icon(Icons.folder_outlined, size: 16),
@@ -68,14 +124,50 @@ class ScriptListSection extends ConsumerWidget {
                   data: (groups) {
                     final allScripts = groups.expand((g) => g.scripts).toList();
                     if (allScripts.isEmpty) {
-                      return Center(child: Text(l10n.noScriptsFound, style: theme.textTheme.bodySmall));
+                      return Center(
+                          child: Text(l10n.noScriptsFound,
+                              style: theme.textTheme.bodySmall));
                     }
+
+                    final filteredGroups = effectiveQuery.isEmpty
+                        ? groups
+                        : groups
+                            .map((g) => ScriptGroup(
+                                  name: g.name,
+                                  path: g.path,
+                                  scripts: g.scripts
+                                      .where((s) => s.name
+                                          .toLowerCase()
+                                          .contains(effectiveQuery))
+                                      .toList(),
+                                ))
+                            .where((g) => g.scripts.isNotEmpty)
+                            .toList();
+                    final filteredScripts = effectiveQuery.isEmpty
+                        ? allScripts
+                        : allScripts
+                            .where((s) =>
+                                s.name.toLowerCase().contains(effectiveQuery))
+                            .toList();
+
+                    final isEmptyAfterFilter =
+                        viewMode == ScriptListViewMode.grouped
+                            ? filteredGroups.isEmpty
+                            : filteredScripts.isEmpty;
+                    if (effectiveQuery.isNotEmpty && isEmptyAfterFilter) {
+                      return Center(
+                          child: Text(l10n.noScriptsMatchSearch,
+                              style: theme.textTheme.bodySmall));
+                    }
+
                     return viewMode == ScriptListViewMode.grouped
-                        ? _GroupedList(groups: groups)
-                        : _FlatList(scripts: allScripts);
+                        ? _GroupedList(groups: filteredGroups)
+                        : _FlatList(scripts: filteredScripts);
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (e, _) => Center(child: Text('${l10n.errorLoadingScripts}: $e')),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (e, _) =>
+                      Center(child: Text('${l10n.errorLoadingScripts}: $e')),
                 ),
         ),
       ],
@@ -92,6 +184,8 @@ class _GroupedList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final selected = ref.watch(selectedScriptProvider);
+    final deviceSerial =
+        ref.watch(adbDevicesProvider.select((s) => s.selectedSerial));
 
     return Material(
       type: MaterialType.transparency,
@@ -99,16 +193,24 @@ class _GroupedList extends ConsumerWidget {
         itemCount: groups.length,
         itemBuilder: (context, index) {
           final group = groups[index];
-          final displayName = group.name.isEmpty ? l10n.generalGroup : group.name;
+          final displayName =
+              group.name.isEmpty ? l10n.generalGroup : group.name;
 
           return ExpansionTile(
+            key: ValueKey(group.path),
             initiallyExpanded: true,
             dense: true,
             leading: const Icon(Icons.folder, size: 18),
-            title: Text(displayName, style: const TextStyle(fontWeight: FontWeight.w600)),
+            title: Text(displayName,
+                style: const TextStyle(fontWeight: FontWeight.w600)),
             children: group.scripts.map((script) {
               final isSelected = selected?.path == script.path;
-              return _ScriptTile(script: script, isSelected: isSelected, indent: true);
+              return _ScriptTile(
+                script: script,
+                isSelected: isSelected,
+                indent: true,
+                deviceSerial: deviceSerial,
+              );
             }).toList(),
           );
         },
@@ -125,6 +227,8 @@ class _FlatList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(selectedScriptProvider);
+    final deviceSerial =
+        ref.watch(adbDevicesProvider.select((s) => s.selectedSerial));
 
     return Material(
       type: MaterialType.transparency,
@@ -133,7 +237,12 @@ class _FlatList extends ConsumerWidget {
         itemBuilder: (context, index) {
           final script = scripts[index];
           final isSelected = selected?.path == script.path;
-          return _ScriptTile(script: script, isSelected: isSelected, indent: false);
+          return _ScriptTile(
+            script: script,
+            isSelected: isSelected,
+            indent: false,
+            deviceSerial: deviceSerial,
+          );
         },
       ),
     );
@@ -141,22 +250,44 @@ class _FlatList extends ConsumerWidget {
 }
 
 class _ScriptTile extends ConsumerWidget {
-  const _ScriptTile({required this.script, required this.isSelected, required this.indent});
+  const _ScriptTile({
+    required this.script,
+    required this.isSelected,
+    required this.indent,
+    required this.deviceSerial,
+  });
 
   final ScriptModel script;
   final bool isSelected;
   final bool indent;
+  final String? deviceSerial;
+
+  Widget _buildQuickRunButton(WidgetRef ref, AppLocalizations l10n) {
+    final button = IconButton(
+      icon: const Icon(Icons.play_arrow, size: 18),
+      visualDensity: VisualDensity.compact,
+      tooltip: deviceSerial == null ? null : l10n.runScript,
+      onPressed: deviceSerial == null
+          ? null
+          : () => runScriptWithLogging(ref, script, const [], deviceSerial!),
+    );
+
+    if (deviceSerial != null) return button;
+    return Tooltip(message: l10n.noDeviceConnected, child: button);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return ListTile(
       dense: true,
       visualDensity: VisualDensity.compact,
       contentPadding: EdgeInsets.only(left: indent ? 32 : 16, right: 16),
       selected: isSelected,
-      selectedTileColor: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+      selectedTileColor:
+          theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
       leading: const Icon(Icons.description_outlined, size: 16),
       title: Text(script.name, overflow: TextOverflow.ellipsis),
       subtitle: !indent && script.groupName.isNotEmpty
@@ -168,7 +299,7 @@ class _ScriptTile extends ConsumerWidget {
               label: Text('${script.parameterCount}'),
               padding: EdgeInsets.zero,
             )
-          : null,
+          : _buildQuickRunButton(ref, l10n),
       onTap: () => ref.read(selectedScriptProvider.notifier).state = script,
     );
   }

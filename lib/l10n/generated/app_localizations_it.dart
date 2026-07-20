@@ -47,6 +47,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get generalGroup => 'Generale';
 
   @override
+  String get searchScriptsHint => 'Cerca script';
+
+  @override
+  String get clearSearch => 'Cancella ricerca';
+
+  @override
+  String get noScriptsMatchSearch => 'Nessuno script corrisponde alla ricerca';
+
+  @override
   String get noScriptSelected =>
       'Seleziona uno script dalla lista per vederne i dettagli';
 

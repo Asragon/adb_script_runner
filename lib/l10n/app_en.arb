@@ -18,6 +18,9 @@
   "noScriptsFound": "No scripts found in this folder",
   "errorLoadingScripts": "Error loading scripts",
   "generalGroup": "General",
+  "searchScriptsHint": "Search scripts",
+  "clearSearch": "Clear search",
+  "noScriptsMatchSearch": "No scripts match your search",
 
   "noScriptSelected": "Select a script from the list to see its details",
   "parametersLabel": "Parameters",

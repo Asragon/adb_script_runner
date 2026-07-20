@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/utils/run_script.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../models/script_model.dart';
 import '../providers/adb_devices_provider.dart';
-import '../providers/console_provider.dart';
 import '../providers/selected_script_provider.dart';
-import '../services/script_runner_service.dart';
 
 /// Bottom-left section: shows the details of the selected script. If
 /// the script requires positional parameters ($1, $2, ...) it shows a
@@ -23,7 +20,6 @@ class ScriptDetailSection extends ConsumerStatefulWidget {
 }
 
 class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
-  final ScriptRunnerService _runner = ScriptRunnerService();
   final Map<String, TextEditingController> _controllers = {};
   String? _lastScriptPath;
 
@@ -49,38 +45,6 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
     super.dispose();
   }
 
-  Future<void> _run(
-      ScriptModel script, List<String> params, String deviceSerial) async {
-    final consoleNotifier = ref.read(consoleProvider.notifier);
-    final command = _runner.buildCommandPreview(script, params);
-    final entryId =
-        consoleNotifier.startEntry(scriptName: script.name, command: command);
-
-    try {
-      final process =
-          await _runner.run(script, params, deviceSerial: deviceSerial);
-
-      process.stdout.transform(const SystemEncoding().decoder).listen((data) {
-        for (final line in data.split('\n')) {
-          if (line.trim().isNotEmpty)
-            consoleNotifier.appendOutput(entryId, line);
-        }
-      });
-      process.stderr.transform(const SystemEncoding().decoder).listen((data) {
-        for (final line in data.split('\n')) {
-          if (line.trim().isNotEmpty)
-            consoleNotifier.appendOutput(entryId, '[stderr] $line');
-        }
-      });
-
-      final exitCode = await process.exitCode;
-      consoleNotifier.finish(entryId, exitCode: exitCode);
-    } catch (e) {
-      consoleNotifier.appendOutput(entryId, '[error] $e');
-      consoleNotifier.finish(entryId, exitCode: -1);
-    }
-  }
-
   Widget _buildRunButton(
     AppLocalizations l10n,
     ScriptModel script,
@@ -92,7 +56,7 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
           : () {
               final params =
                   _controllersFor(script).map((c) => c.text).toList();
-              _run(script, params, deviceSerial);
+              runScriptWithLogging(ref, script, params, deviceSerial);
             },
       icon: const Icon(Icons.play_arrow, size: 18),
       label: Text(l10n.runScript),

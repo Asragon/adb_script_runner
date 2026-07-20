@@ -47,6 +47,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generalGroup => 'General';
 
   @override
+  String get searchScriptsHint => 'Search scripts';
+
+  @override
+  String get clearSearch => 'Clear search';
+
+  @override
+  String get noScriptsMatchSearch => 'No scripts match your search';
+
+  @override
   String get noScriptSelected =>
       'Select a script from the list to see its details';
 

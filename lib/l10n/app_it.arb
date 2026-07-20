@@ -17,6 +17,9 @@
   "noScriptsFound": "Nessuno script trovato in questa cartella",
   "errorLoadingScripts": "Errore nel caricamento degli script",
   "generalGroup": "Generale",
+  "searchScriptsHint": "Cerca script",
+  "clearSearch": "Cancella ricerca",
+  "noScriptsMatchSearch": "Nessuno script corrisponde alla ricerca",
 
   "noScriptSelected": "Seleziona uno script dalla lista per vederne i dettagli",
   "parametersLabel": "Parametri",
