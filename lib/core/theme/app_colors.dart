@@ -11,6 +11,11 @@ class AppColors {
 
   static const Color seed = Color(0xFF3A6EA5);
 
+  // Quick-pick accent colors offered in the app bar to override [seed].
+  static const Color accentRed = Color(0xFFE53935);
+  static const Color accentGreen = Color(0xFF43A047);
+  static const Color accentBlue = Color(0xFF3A6EA5);
+
   // Semantic colors used for command status in the console.
   static const Color statusRunning = Color(0xFFF39C12);
   static const Color statusSuccess = Color(0xFF2ECC71);

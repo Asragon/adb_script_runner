@@ -5,6 +5,10 @@
 
   "toggleTheme": "Cambia tema chiaro/scuro",
 
+  "changeColorRed": "Cambia colore app in rosso",
+  "changeColorGreen": "Cambia colore app in verde",
+  "changeColorBlue": "Cambia colore app in blu",
+
   "switchToItalian": "Passa all'italiano",
   "switchToEnglish": "Passa all'inglese",
 

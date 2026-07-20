@@ -110,6 +110,24 @@ abstract class AppLocalizations {
   /// **'Toggle light/dark theme'**
   String get toggleTheme;
 
+  /// No description provided for @changeColorRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Change app color to red'**
+  String get changeColorRed;
+
+  /// No description provided for @changeColorGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Change app color to green'**
+  String get changeColorGreen;
+
+  /// No description provided for @changeColorBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Change app color to blue'**
+  String get changeColorBlue;
+
   /// No description provided for @switchToItalian.
   ///
   /// In en, this message translates to:

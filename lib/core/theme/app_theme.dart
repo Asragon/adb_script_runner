@@ -10,17 +10,17 @@ import 'app_colors.dart';
 class AppTheme {
   const AppTheme._();
 
-  static ThemeData light() {
+  static ThemeData light({Color seedColor = AppColors.seed}) {
     final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.seed,
+      seedColor: seedColor,
       brightness: Brightness.light,
     );
     return _base(scheme);
   }
 
-  static ThemeData dark() {
+  static ThemeData dark({Color seedColor = AppColors.seed}) {
     final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.seed,
+      seedColor: seedColor,
       brightness: Brightness.dark,
     );
     return _base(scheme);

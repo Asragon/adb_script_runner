@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/root_folder.dart';
@@ -16,6 +17,8 @@ import '../models/root_folder.dart';
 class StorageService {
   static const _rootFoldersKey = 'root_folders';
   static const _activeFolderKey = 'active_root_folder';
+  static const _themeModeKey = 'theme_mode';
+  static const _seedColorKey = 'seed_color';
 
   Future<List<RootFolder>> loadRootFolders() async {
     final prefs = await SharedPreferences.getInstance();
@@ -43,5 +46,31 @@ class StorageService {
     } else {
       await prefs.setString(_activeFolderKey, path);
     }
+  }
+
+  Future<ThemeMode?> loadThemeMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return switch (prefs.getString(_themeModeKey)) {
+      'light' => ThemeMode.light,
+      'dark' => ThemeMode.dark,
+      'system' => ThemeMode.system,
+      _ => null,
+    };
+  }
+
+  Future<void> saveThemeMode(ThemeMode mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_themeModeKey, mode.name);
+  }
+
+  Future<Color?> loadSeedColor() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getInt(_seedColorKey);
+    return raw == null ? null : Color(raw);
+  }
+
+  Future<void> saveSeedColor(Color color) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_seedColorKey, color.toARGB32());
   }
 }

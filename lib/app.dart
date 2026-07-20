@@ -14,13 +14,14 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final seedColor = ref.watch(seedColorProvider);
     final locale = ref.watch(localeProvider);
 
     return MaterialApp(
       title: 'ADB Script Runner',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
+      theme: AppTheme.light(seedColor: seedColor),
+      darkTheme: AppTheme.dark(seedColor: seedColor),
       themeMode: themeMode,
 
       // Multi-language: currently IT/EN, switchable in real time via

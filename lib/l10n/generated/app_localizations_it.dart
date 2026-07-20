@@ -15,6 +15,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get toggleTheme => 'Cambia tema chiaro/scuro';
 
   @override
+  String get changeColorRed => 'Cambia colore app in rosso';
+
+  @override
+  String get changeColorGreen => 'Cambia colore app in verde';
+
+  @override
+  String get changeColorBlue => 'Cambia colore app in blu';
+
+  @override
   String get switchToItalian => 'Passa all\'italiano';
 
   @override
