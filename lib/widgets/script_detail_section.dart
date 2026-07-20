@@ -49,14 +49,16 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
     super.dispose();
   }
 
-  Future<void> _run(ScriptModel script, List<String> params, String deviceSerial) async {
+  Future<void> _run(
+      ScriptModel script, List<String> params, String deviceSerial) async {
     final consoleNotifier = ref.read(consoleProvider.notifier);
     final command = _runner.buildCommandPreview(script, params);
     final entryId =
         consoleNotifier.startEntry(scriptName: script.name, command: command);
 
     try {
-      final process = await _runner.run(script, params, deviceSerial: deviceSerial);
+      final process =
+          await _runner.run(script, params, deviceSerial: deviceSerial);
 
       process.stdout.transform(const SystemEncoding().decoder).listen((data) {
         for (final line in data.split('\n')) {
@@ -88,7 +90,8 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
       onPressed: deviceSerial == null
           ? null
           : () {
-              final params = _controllersFor(script).map((c) => c.text).toList();
+              final params =
+                  _controllersFor(script).map((c) => c.text).toList();
               _run(script, params, deviceSerial);
             },
       icon: const Icon(Icons.play_arrow, size: 18),
@@ -104,7 +107,8 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final script = ref.watch(selectedScriptProvider);
-    final deviceSerial = ref.watch(adbDevicesProvider.select((s) => s.selectedSerial));
+    final deviceSerial =
+        ref.watch(adbDevicesProvider.select((s) => s.selectedSerial));
 
     return Container(
       constraints: const BoxConstraints(minHeight: 170, maxHeight: 260),
@@ -144,12 +148,6 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
                         ?.copyWith(color: theme.hintColor),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    script.body,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(color: theme.hintColor),
-                    overflow: TextOverflow.ellipsis,
-                  ),
                   const SizedBox(height: 12),
                   if (script.hasParameters) ...[
                     Text(l10n.parametersLabel,
@@ -176,6 +174,12 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: _buildRunButton(l10n, script, deviceSerial),
+                  ),
+                  Text(
+                    script.body,
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: theme.hintColor),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
