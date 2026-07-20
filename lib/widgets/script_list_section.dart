@@ -53,124 +53,131 @@ class _ScriptListSectionState extends ConsumerState<ScriptListSection> {
     final effectiveQuery =
         searchQuery.trim().length >= 2 ? searchQuery.trim().toLowerCase() : '';
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-          child: Row(
-            children: [
-              Icon(Icons.terminal, size: 18, color: theme.colorScheme.primary),
-              const SizedBox(width: 8),
-              Text(l10n.scriptsTitle, style: theme.textTheme.titleSmall),
-              const SizedBox(width: 12),
-              SizedBox(
-                width: 160,
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: _onSearchChanged,
-                  style: theme.textTheme.bodySmall,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                    hintText: l10n.searchScriptsHint,
-                    prefixIcon: const Icon(Icons.search, size: 16),
-                    suffixIcon: _searchController.text.isEmpty
-                        ? null
-                        : IconButton(
-                            icon: const Icon(Icons.clear, size: 14),
-                            tooltip: l10n.clearSearch,
-                            onPressed: _clearSearch,
-                          ),
-                  ),
-                ),
-              ),
-              const Spacer(),
-              ToggleButtons(
-                constraints: const BoxConstraints(minHeight: 30, minWidth: 38),
-                borderRadius: BorderRadius.circular(6),
-                isSelected: [
-                  viewMode == ScriptListViewMode.grouped,
-                  viewMode == ScriptListViewMode.flat,
-                ],
-                onPressed: (index) {
-                  ref.read(scriptListViewModeProvider.notifier).state =
-                      index == 0
-                          ? ScriptListViewMode.grouped
-                          : ScriptListViewMode.flat;
-                },
-                children: const [
-                  Icon(Icons.folder_outlined, size: 16),
-                  Icon(Icons.list, size: 16),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const Divider(height: 1),
-        Expanded(
-          child: activeFolder == null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      l10n.selectFolderPrompt,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodySmall,
+    return Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+            child: Row(
+              children: [
+                Icon(Icons.terminal,
+                    size: 18, color: theme.colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(l10n.scriptsTitle, style: theme.textTheme.titleSmall),
+                const SizedBox(width: 12),
+                SizedBox(
+                  width: 160,
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: _onSearchChanged,
+                    style: theme.textTheme.bodySmall,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                      hintText: l10n.searchScriptsHint,
+                      prefixIcon: const Icon(Icons.search, size: 16),
+                      suffixIcon: _searchController.text.isEmpty
+                          ? null
+                          : IconButton(
+                              icon: const Icon(Icons.clear, size: 14),
+                              tooltip: l10n.clearSearch,
+                              onPressed: _clearSearch,
+                            ),
                     ),
                   ),
-                )
-              : scriptsAsync.when(
-                  data: (groups) {
-                    final allScripts = groups.expand((g) => g.scripts).toList();
-                    if (allScripts.isEmpty) {
-                      return Center(
-                          child: Text(l10n.noScriptsFound,
-                              style: theme.textTheme.bodySmall));
-                    }
-
-                    final filteredGroups = effectiveQuery.isEmpty
-                        ? groups
-                        : groups
-                            .map((g) => ScriptGroup(
-                                  name: g.name,
-                                  path: g.path,
-                                  scripts: g.scripts
-                                      .where((s) => s.name
-                                          .toLowerCase()
-                                          .contains(effectiveQuery))
-                                      .toList(),
-                                ))
-                            .where((g) => g.scripts.isNotEmpty)
-                            .toList();
-                    final filteredScripts = effectiveQuery.isEmpty
-                        ? allScripts
-                        : allScripts
-                            .where((s) =>
-                                s.name.toLowerCase().contains(effectiveQuery))
-                            .toList();
-
-                    final isEmptyAfterFilter =
-                        viewMode == ScriptListViewMode.grouped
-                            ? filteredGroups.isEmpty
-                            : filteredScripts.isEmpty;
-                    if (effectiveQuery.isNotEmpty && isEmptyAfterFilter) {
-                      return Center(
-                          child: Text(l10n.noScriptsMatchSearch,
-                              style: theme.textTheme.bodySmall));
-                    }
-
-                    return viewMode == ScriptListViewMode.grouped
-                        ? _GroupedList(groups: filteredGroups)
-                        : _FlatList(scripts: filteredScripts);
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (e, _) =>
-                      Center(child: Text('${l10n.errorLoadingScripts}: $e')),
                 ),
-        ),
-      ],
+                const Spacer(),
+                ToggleButtons(
+                  constraints:
+                      const BoxConstraints(minHeight: 30, minWidth: 38),
+                  borderRadius: BorderRadius.circular(6),
+                  isSelected: [
+                    viewMode == ScriptListViewMode.grouped,
+                    viewMode == ScriptListViewMode.flat,
+                  ],
+                  onPressed: (index) {
+                    ref.read(scriptListViewModeProvider.notifier).state =
+                        index == 0
+                            ? ScriptListViewMode.grouped
+                            : ScriptListViewMode.flat;
+                  },
+                  children: const [
+                    Icon(Icons.folder_outlined, size: 16),
+                    Icon(Icons.list, size: 16),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+          Expanded(
+            child: activeFolder == null
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        l10n.selectFolderPrompt,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ),
+                  )
+                : scriptsAsync.when(
+                    data: (groups) {
+                      final allScripts =
+                          groups.expand((g) => g.scripts).toList();
+                      if (allScripts.isEmpty) {
+                        return Center(
+                            child: Text(l10n.noScriptsFound,
+                                style: theme.textTheme.bodySmall));
+                      }
+
+                      final filteredGroups = effectiveQuery.isEmpty
+                          ? groups
+                          : groups
+                              .map((g) => ScriptGroup(
+                                    name: g.name,
+                                    path: g.path,
+                                    scripts: g.scripts
+                                        .where((s) => s.name
+                                            .toLowerCase()
+                                            .contains(effectiveQuery))
+                                        .toList(),
+                                  ))
+                              .where((g) => g.scripts.isNotEmpty)
+                              .toList();
+                      final filteredScripts = effectiveQuery.isEmpty
+                          ? allScripts
+                          : allScripts
+                              .where((s) =>
+                                  s.name.toLowerCase().contains(effectiveQuery))
+                              .toList();
+
+                      final isEmptyAfterFilter =
+                          viewMode == ScriptListViewMode.grouped
+                              ? filteredGroups.isEmpty
+                              : filteredScripts.isEmpty;
+                      if (effectiveQuery.isNotEmpty && isEmptyAfterFilter) {
+                        return Center(
+                            child: Text(l10n.noScriptsMatchSearch,
+                                style: theme.textTheme.bodySmall));
+                      }
+
+                      return viewMode == ScriptListViewMode.grouped
+                          ? _GroupedList(groups: filteredGroups)
+                          : _FlatList(scripts: filteredScripts);
+                    },
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (e, _) =>
+                        Center(child: Text('${l10n.errorLoadingScripts}: $e')),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

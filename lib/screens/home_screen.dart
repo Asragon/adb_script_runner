@@ -27,6 +27,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final themeMode = ref.watch(themeModeProvider);
     final seedColor = ref.watch(seedColorProvider);
 
@@ -66,27 +67,31 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(width: 8),
         ],
       ),
-      body: const Column(
+      body: Column(
         children: [
-          LanguageSelector(),
-          Divider(height: 1),
+          const LanguageSelector(),
+          const Divider(height: 1),
           Expanded(
             child: Row(
               children: [
                 Expanded(
                   flex: 40,
-                  child: Column(
-                    children: [
-                      RootFolderSection(),
-                      Divider(height: 1),
-                      Expanded(child: ScriptListSection()),
-                      Divider(height: 1),
-                      ScriptDetailSection(),
-                    ],
+                  child: Container(
+                    color: theme.colorScheme.surfaceContainerLowest,
+                    padding: const EdgeInsets.all(8),
+                    child: const Column(
+                      children: [
+                        RootFolderSection(),
+                        SizedBox(height: 8),
+                        Expanded(child: ScriptListSection()),
+                        SizedBox(height: 8),
+                        ScriptDetailSection(),
+                      ],
+                    ),
                   ),
                 ),
-                VerticalDivider(width: 1),
-                Expanded(
+                const VerticalDivider(width: 1),
+                const Expanded(
                   flex: 60,
                   child: ConsoleSection(),
                 ),
