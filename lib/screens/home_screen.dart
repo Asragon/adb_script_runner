@@ -31,6 +31,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.appTitle),
+        scrolledUnderElevation: 0,
         actions: [
           IconButton(
             tooltip: l10n.toggleTheme,
