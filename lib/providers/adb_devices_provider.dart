@@ -6,7 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/adb_device.dart';
 import '../services/adb_device_service.dart';
 
-final adbDeviceServiceProvider = Provider<AdbDeviceService>((ref) => AdbDeviceService());
+final adbDeviceServiceProvider =
+    Provider<AdbDeviceService>((ref) => AdbDeviceService());
 
 class AdbDevicesState {
   const AdbDevicesState({
@@ -36,7 +37,8 @@ class AdbDevicesState {
   }) {
     return AdbDevicesState(
       devices: devices ?? this.devices,
-      selectedSerial: clearSelected ? null : (selectedSerial ?? this.selectedSerial),
+      selectedSerial:
+          clearSelected ? null : (selectedSerial ?? this.selectedSerial),
       adbAvailable: adbAvailable ?? this.adbAvailable,
     );
   }
@@ -63,6 +65,9 @@ class AdbDevicesNotifier extends StateNotifier<AdbDevicesState> {
   final Map<String, AdbDeviceKind> _kindCache = {};
   final Set<String> _pendingKindFetches = {};
 
+  final Map<String, String> _avdNameCache = {};
+  final Set<String> _pendingAvdNameFetches = {};
+
   static const _debounceDelay = Duration(milliseconds: 300);
 
   Future<void> _start() async {
@@ -83,7 +88,8 @@ class AdbDevicesNotifier extends StateNotifier<AdbDevicesState> {
       );
     } on ProcessException {
       if (!mounted) return;
-      state = state.copyWith(adbAvailable: false, devices: const [], clearSelected: true);
+      state = state.copyWith(
+          adbAvailable: false, devices: const [], clearSelected: true);
     }
   }
 
@@ -106,15 +112,18 @@ class AdbDevicesNotifier extends StateNotifier<AdbDevicesState> {
       );
 
       _refreshKindsIfNeeded(devices);
+      _refreshAvdNamesIfNeeded(devices);
     } on ProcessException {
       if (!mounted) return;
-      state = state.copyWith(adbAvailable: false, devices: const [], clearSelected: true);
+      state = state.copyWith(
+          adbAvailable: false, devices: const [], clearSelected: true);
     }
   }
 
   String? _resolveSelected(List<AdbDevice> devices, String? previous) {
     final ready = devices.where((d) => d.isReady).toList();
-    if (previous != null && ready.any((d) => d.serial == previous)) return previous;
+    if (previous != null && ready.any((d) => d.serial == previous))
+      return previous;
     return ready.isEmpty ? null : ready.first.serial;
   }
 
@@ -146,6 +155,39 @@ class AdbDevicesNotifier extends StateNotifier<AdbDevicesState> {
     state = state.copyWith(devices: updated);
   }
 
+  void _refreshAvdNamesIfNeeded(List<AdbDevice> devices) {
+    for (final device in devices) {
+      if (!device.isReady) continue;
+      if (!device.serial.startsWith('emulator-')) continue;
+
+      final cachedName = _avdNameCache[device.serial];
+      if (cachedName != null) {
+        _applyAvdName(device.serial, cachedName);
+        continue;
+      }
+      if (_pendingAvdNameFetches.contains(device.serial)) continue;
+
+      _pendingAvdNameFetches.add(device.serial);
+      _service.getAvdName(device.serial).then((name) {
+        _pendingAvdNameFetches.remove(device.serial);
+        if (name == null) return;
+        _avdNameCache[device.serial] = name;
+        if (mounted) _applyAvdName(device.serial, name);
+      });
+    }
+  }
+
+  void _applyAvdName(String serial, String avdName) {
+    final updated = [
+      for (final device in state.devices)
+        if (device.serial == serial)
+          device.copyWith(avdName: avdName)
+        else
+          device,
+    ];
+    state = state.copyWith(devices: updated);
+  }
+
   /// Manual selection by the user (menu in [DeviceSelector]).
   void selectDevice(String serial) {
     final exists = state.devices.any((d) => d.serial == serial && d.isReady);
@@ -162,6 +204,7 @@ class AdbDevicesNotifier extends StateNotifier<AdbDevicesState> {
   }
 }
 
-final adbDevicesProvider = StateNotifierProvider<AdbDevicesNotifier, AdbDevicesState>((ref) {
+final adbDevicesProvider =
+    StateNotifierProvider<AdbDevicesNotifier, AdbDevicesState>((ref) {
   return AdbDevicesNotifier(ref.watch(adbDeviceServiceProvider));
 });

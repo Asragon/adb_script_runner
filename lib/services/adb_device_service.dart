@@ -40,6 +40,27 @@ class AdbDeviceService {
     }
   }
 
+  /// Queries the AVD name of an emulator (e.g. "Pixel 10 Pro XL API 37"),
+  /// via the emulator console's `avd name` command. Only meaningful for
+  /// emulators (serials starting with "emulator-"); the caller is
+  /// responsible for skipping physical devices. Returns null on any
+  /// error (emulator not ready, command failed, empty output) so the
+  /// caller falls back to the build model/product.
+  Future<String?> getAvdName(String serial) async {
+    try {
+      final result = await Process.run('adb', ['-s', serial, 'emu', 'avd', 'name']);
+      final lines = (result.stdout as String)
+          .split('\n')
+          .map((line) => line.trim())
+          .where((line) => line.isNotEmpty && line != 'OK')
+          .toList();
+      if (lines.isEmpty) return null;
+      return lines.first.replaceAll('_', ' ');
+    } catch (_) {
+      return null;
+    }
+  }
+
   List<AdbDevice> _parseDevicesOutput(String output) {
     final devices = <AdbDevice>[];
 
