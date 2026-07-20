@@ -2,13 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/console_entry.dart';
 
-/// Gestisce lo storico cronologico dei comandi eseguiti, mostrato nella
-/// console a destra.
+/// Manages the chronological history of executed commands, shown in
+/// the console on the right.
 class ConsoleNotifier extends StateNotifier<List<ConsoleEntry>> {
   ConsoleNotifier() : super(const []);
 
-  /// Crea una nuova voce con stato "running" e la restituisce (id) così
-  /// da poterla aggiornare mentre il processo produce output.
+  /// Creates a new entry with "running" status and returns its id, so
+  /// it can be updated while the process produces output.
   String startEntry({required String scriptName, required String command}) {
     final id = DateTime.now().microsecondsSinceEpoch.toString();
     state = [

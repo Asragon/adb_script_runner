@@ -9,7 +9,7 @@ import '../widgets/root_folder_section.dart';
 import '../widgets/script_detail_section.dart';
 import '../widgets/script_list_section.dart';
 
-/// Layout principale:
+/// Main layout:
 ///
 /// ┌─────────────────────────────────────────────────┐
 /// │ Language selector                                │

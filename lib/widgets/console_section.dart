@@ -6,8 +6,8 @@ import '../l10n/generated/app_localizations.dart';
 import '../models/console_entry.dart';
 import '../providers/console_provider.dart';
 
-/// Sezione destra: mostra in ordine cronologico tutti i comandi
-/// lanciati, con output/errore e stato (in corso / successo / errore).
+/// Right-hand section: shows all launched commands in chronological
+/// order, with output/error and status (running / success / error).
 class ConsoleSection extends ConsumerStatefulWidget {
   const ConsoleSection({super.key});
 

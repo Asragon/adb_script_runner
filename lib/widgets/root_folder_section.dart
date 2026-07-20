@@ -5,10 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../providers/root_folders_provider.dart';
 
-/// Sezione in alto a sinistra: permette di aggiungere/rimuovere root
-/// folder e di scegliere quale sia quella attiva (da cui vengono
-/// caricati gli script). Le root folder sono persistite, quindi
-/// restano disponibili alla riapertura dell'app.
+/// Top-left section: lets the user add/remove root folders and choose
+/// which one is active (the one scripts are loaded from). Root folders
+/// are persisted, so they remain available when the app is reopened.
 class RootFolderSection extends ConsumerWidget {
   const RootFolderSection({super.key});
 

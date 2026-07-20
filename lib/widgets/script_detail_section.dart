@@ -10,10 +10,10 @@ import '../providers/console_provider.dart';
 import '../providers/selected_script_provider.dart';
 import '../services/script_runner_service.dart';
 
-/// Sezione in basso a sinistra: mostra i dettagli dello script
-/// selezionato. Se lo script richiede parametri posizionali ($1, $2,
-/// ...) mostra un campo di testo per ciascuno; altrimenti il pulsante
-/// "Esegui" lancia direttamente il comando.
+/// Bottom-left section: shows the details of the selected script. If
+/// the script requires positional parameters ($1, $2, ...) it shows a
+/// text field for each one; otherwise the "Run" button launches the
+/// command directly.
 class ScriptDetailSection extends ConsumerStatefulWidget {
   const ScriptDetailSection({super.key});
 

@@ -5,11 +5,10 @@ import '../l10n/generated/app_localizations.dart';
 import '../providers/locale_provider.dart';
 import 'device_selector.dart';
 
-/// Barra sottile tra l'AppBar e il contenuto principale: due bandiere
-/// (IT/EN) che cambiano la lingua dell'app in tempo reale. Le bandiere
-/// sono disegnate a mano (CustomPainter) invece che con emoji, perché
-/// il motore di rendering di Flutter su Windows non mostra le emoji
-/// bandiera a colori.
+/// Thin bar between the AppBar and the main content: two flags (IT/EN)
+/// that change the app's language in real time. The flags are
+/// hand-drawn (CustomPainter) instead of using emoji, because Flutter's
+/// rendering engine on Windows doesn't display colored flag emoji.
 class LanguageSelector extends ConsumerWidget {
   const LanguageSelector({super.key});
 

@@ -2,17 +2,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/root_folder.dart';
 
-/// Gestisce la persistenza locale (tramite [SharedPreferences]) dei
-/// percorsi delle root folder scelte dall'utente, così che siano
-/// disponibili anche alla riapertura dell'app.
+/// Handles local persistence (via [SharedPreferences]) of the root
+/// folder paths chosen by the user, so they're still available when the
+/// app is reopened.
 ///
-/// Nota: per il solo scopo di salvare una lista di percorsi,
-/// [SharedPreferences] è sufficiente e non richiede setup nativo
-/// aggiuntivo su Windows/macOS. Se in futuro servisse persistere
-/// strutture dati più complesse (es. metadati per script, storico
-/// esecuzioni) si può migrare a un database locale come Hive o Isar
-/// senza impattare il resto dell'app, dato che questa classe è l'unico
-/// punto di accesso alla persistenza.
+/// Note: for the sole purpose of saving a list of paths,
+/// [SharedPreferences] is sufficient and requires no extra native setup
+/// on Windows/macOS. If in the future more complex data structures need
+/// persisting (e.g. per-script metadata, execution history), it can be
+/// migrated to a local database like Hive or Isar without impacting the
+/// rest of the app, since this class is the sole access point for
+/// persistence.
 class StorageService {
   static const _rootFoldersKey = 'root_folders';
   static const _activeFolderKey = 'active_root_folder';

@@ -54,8 +54,8 @@ class ScriptsNotifier extends StateNotifier<AsyncValue<List<ScriptGroup>>> {
   }
 }
 
-/// Ogni volta che cambia la root folder attiva, questo provider viene
-/// ricreato e riesegue automaticamente la scansione della nuova cartella.
+/// Every time the active root folder changes, this provider is
+/// recreated and automatically re-scans the new folder.
 final scriptsProvider = StateNotifierProvider<ScriptsNotifier, AsyncValue<List<ScriptGroup>>>((ref) {
   final scanner = ref.watch(scriptScannerServiceProvider);
   final activePath = ref.watch(

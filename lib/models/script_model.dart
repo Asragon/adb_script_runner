@@ -1,4 +1,4 @@
-/// Rappresenta un singolo script individuato all'interno di una root folder.
+/// Represents a single script found inside a root folder.
 class ScriptModel {
   const ScriptModel({
     required this.name,
@@ -9,22 +9,22 @@ class ScriptModel {
     required this.body,
   });
 
-  /// Nome del file, es. "reboot_device.sh".
+  /// File name, e.g. "reboot_device.sh".
   final String name;
 
   final String body;
 
-  /// Percorso assoluto sul filesystem.
+  /// Absolute path on the filesystem.
   final String path;
 
-  /// Nome della sottocartella di appartenenza. Stringa vuota se lo
-  /// script si trova direttamente nella root folder.
+  /// Name of the subfolder it belongs to. Empty string if the script
+  /// sits directly in the root folder.
   final String groupName;
 
-  /// Numero di parametri posizionali richiesti (0 se nessuno).
+  /// Number of positional parameters required (0 if none).
   final int parameterCount;
 
-  /// Etichette dei parametri, es. ["\$1", "\$2"].
+  /// Parameter labels, e.g. ["\$1", "\$2"].
   final List<String> parameterPlaceholders;
 
   bool get hasParameters => parameterCount > 0;

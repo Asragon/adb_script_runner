@@ -8,8 +8,8 @@ import '../providers/root_folders_provider.dart';
 import '../providers/scripts_provider.dart';
 import '../providers/selected_script_provider.dart';
 
-/// Sezione centrale sinistra: mostra gli script della root folder
-/// attiva, sia raggruppati per sottocartella sia come lista piatta.
+/// Center-left section: shows the scripts of the active root folder,
+/// either grouped by subfolder or as a flat list.
 class ScriptListSection extends ConsumerWidget {
   const ScriptListSection({super.key});
 

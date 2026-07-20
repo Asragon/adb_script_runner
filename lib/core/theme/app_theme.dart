@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-/// Costruisce i [ThemeData] dell'applicazione.
+/// Builds the application's [ThemeData].
 ///
-/// Tutta la logica di theming vive qui: se in futuro serve cambiare
-/// font, densità, forma dei componenti, ecc. va modificato solo questo
-/// file e l'intera app si aggiorna di conseguenza.
+/// All theming logic lives here: if in the future the font, density,
+/// component shape, etc. need to change, only this file needs editing
+/// and the whole app updates accordingly.
 class AppTheme {
   const AppTheme._();
 

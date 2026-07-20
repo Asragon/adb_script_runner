@@ -1,8 +1,8 @@
 import 'script_model.dart';
 
-/// Rappresenta un gruppo di script, corrispondente a una sottocartella
-/// della root folder selezionata. [name] è vuoto per gli script che si
-/// trovano direttamente nella root (gruppo "Generale").
+/// Represents a group of scripts, corresponding to a subfolder of the
+/// selected root folder. [name] is empty for scripts that sit directly
+/// in the root (the "General" group).
 class ScriptGroup {
   const ScriptGroup({
     required this.name,

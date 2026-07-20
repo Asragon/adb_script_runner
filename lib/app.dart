@@ -23,11 +23,11 @@ class App extends ConsumerWidget {
       darkTheme: AppTheme.dark(),
       themeMode: themeMode,
 
-      // Multilingua: al momento IT/EN, selezionabile in tempo reale
-      // tramite LanguageSelector (vedi localeProvider). Per aggiungere
-      // una lingua basta creare lib/l10n/app_<locale>.arb e rilanciare
-      // `flutter gen-l10n` (o `flutter run`, dato che `generate: true`
-      // in pubspec.yaml).
+      // Multi-language: currently IT/EN, switchable in real time via
+      // LanguageSelector (see localeProvider). To add a language, just
+      // create lib/l10n/app_<locale>.arb and re-run `flutter gen-l10n`
+      // (or `flutter run`, since `generate: true` is set in
+      // pubspec.yaml).
       locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,

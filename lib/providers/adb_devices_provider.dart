@@ -18,7 +18,7 @@ class AdbDevicesState {
   final List<AdbDevice> devices;
   final String? selectedSerial;
 
-  /// false se `adb` non è stato trovato nel PATH.
+  /// false if `adb` was not found on PATH.
   final bool adbAvailable;
 
   AdbDevice? get selectedDevice {
@@ -42,13 +42,13 @@ class AdbDevicesState {
   }
 }
 
-/// Tiene aggiornata la lista dei device ADB connessi osservando
-/// `adb track-devices`: ogni evento sul suo stdout grezzo (senza parsarne
-/// il contenuto) è solo un trigger "qualcosa è cambiato" che fa rilanciare
-/// il classico `adb devices -l`, la cui uscita è la fonte di verità per lo
-/// stato. Ricalca il pattern di lifecycle di [ScriptsNotifier] (che
-/// analogamente avvia una `Directory.watch` subscription nel costruttore e
-/// la cancella in dispose()).
+/// Keeps the list of connected ADB devices up to date by observing
+/// `adb track-devices`: each event on its raw stdout (without parsing
+/// its content) is just a "something changed" trigger that re-runs the
+/// classic `adb devices -l`, whose output is the source of truth for the
+/// state. Mirrors the lifecycle pattern of [ScriptsNotifier] (which
+/// similarly starts a `Directory.watch` subscription in the constructor
+/// and cancels it in dispose()).
 class AdbDevicesNotifier extends StateNotifier<AdbDevicesState> {
   AdbDevicesNotifier(this._service) : super(const AdbDevicesState()) {
     _start();
@@ -146,7 +146,7 @@ class AdbDevicesNotifier extends StateNotifier<AdbDevicesState> {
     state = state.copyWith(devices: updated);
   }
 
-  /// Selezione manuale da parte dell'utente (menu del [DeviceSelector]).
+  /// Manual selection by the user (menu in [DeviceSelector]).
   void selectDevice(String serial) {
     final exists = state.devices.any((d) => d.serial == serial && d.isReady);
     if (!exists) return;

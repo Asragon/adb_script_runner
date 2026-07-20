@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Lingua corrente dell'app (IT/EN). Impostabile in tempo reale dai
-/// bottoni bandiera in [LanguageSelector]. Default: inglese, in linea
-/// con il locale "template" usato da l10n.yaml.
+/// Current app language (IT/EN). Settable in real time via the flag
+/// buttons in [LanguageSelector]. Default: English, in line with the
+/// "template" locale used by l10n.yaml.
 final localeProvider = StateProvider<Locale>((ref) => const Locale('en'));

@@ -1,7 +1,7 @@
 enum ConsoleEntryStatus { running, success, error }
 
-/// Rappresenta l'esecuzione di un comando, mostrata nella console di
-/// destra in ordine cronologico.
+/// Represents the execution of a command, shown in the console on the
+/// right in chronological order.
 class ConsoleEntry {
   const ConsoleEntry({
     required this.id,

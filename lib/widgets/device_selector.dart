@@ -5,10 +5,10 @@ import '../l10n/generated/app_localizations.dart';
 import '../models/adb_device.dart';
 import '../providers/adb_devices_provider.dart';
 
-/// Mostra il device ADB attualmente selezionato (icona + nome) e, se ce
-/// n'è più di uno connesso, permette di sceglierne un altro da un menu.
-/// Se non c'è nessun device pronto, o `adb` non è nel PATH, mostra un
-/// indicatore disabilitato al suo posto.
+/// Shows the currently selected ADB device (icon + name) and, if more
+/// than one is connected, lets the user pick another one from a menu.
+/// If no device is ready, or `adb` is not on PATH, shows a disabled
+/// indicator instead.
 class DeviceSelector extends ConsumerWidget {
   const DeviceSelector({super.key});
 

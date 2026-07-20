@@ -1,11 +1,12 @@
-/// Stato di connessione riportato da `adb devices -l`.
+/// Connection state reported by `adb devices -l`.
 enum AdbConnectionState { device, unauthorized, offline, other }
 
-/// Categoria hardware del device, dedotta da `ro.build.characteristics`.
-/// Il default (prima della query, o se la query fallisce) è [phone].
+/// Hardware category of the device, inferred from
+/// `ro.build.characteristics`. The default (before the query, or if the
+/// query fails) is [phone].
 enum AdbDeviceKind { phone, tablet, tv, wear }
 
-/// Rappresenta un device ADB così come riportato da `adb devices -l`.
+/// Represents an ADB device as reported by `adb devices -l`.
 class AdbDevice {
   const AdbDevice({
     required this.serial,
@@ -15,7 +16,7 @@ class AdbDevice {
     this.kind = AdbDeviceKind.phone,
   });
 
-  /// Serial del device, oppure "ip:porta" per i device di rete.
+  /// Device serial, or "ip:port" for network devices.
   final String serial;
 
   final AdbConnectionState state;
@@ -23,10 +24,10 @@ class AdbDevice {
   final String? product;
   final AdbDeviceKind kind;
 
-  /// true solo se il device può ricevere comandi (stato "device").
+  /// true only if the device can receive commands (state "device").
   bool get isReady => state == AdbConnectionState.device;
 
-  /// Nome leggibile mostrato in UI.
+  /// Human-readable name shown in the UI.
   String get displayName => model ?? product ?? serial;
 
   AdbDevice copyWith({AdbDeviceKind? kind}) => AdbDevice(

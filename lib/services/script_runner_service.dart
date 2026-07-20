@@ -4,20 +4,20 @@ import 'package:path/path.dart' as p;
 
 import '../models/script_model.dart';
 
-/// Esegue uno script come processo esterno, scegliendo l'interprete
-/// corretto in base all'estensione del file:
-/// - `.sh`   -> bash (richiede bash.exe nel PATH, es. Git Bash o WSL)
+/// Runs a script as an external process, picking the correct
+/// interpreter based on the file extension:
+/// - `.sh`   -> bash (requires bash.exe on PATH, e.g. Git Bash or WSL)
 /// - `.ps1`  -> powershell
 /// - `.bat`/`.cmd` -> cmd
 ///
-/// I parametri vengono passati come argomenti posizionali dello script
-/// (`$1`, `$2`, ... in bash o `%1`, `%2`, ... in batch).
+/// Parameters are passed as positional arguments to the script (`$1`,
+/// `$2`, ... in bash or `%1`, `%2`, ... in batch).
 ///
-/// Se [deviceSerial] è passato, viene impostato come variabile d'ambiente
-/// `ANDROID_SERIAL` sul processo: ogni `adb` invocato dentro lo script la
-/// legge automaticamente quando non riceve un `-s` esplicito, così il
-/// comando raggiunge quel device senza dover riscrivere il contenuto dello
-/// script.
+/// If [deviceSerial] is passed, it's set as the `ANDROID_SERIAL`
+/// environment variable on the process: every `adb` invocation inside
+/// the script reads it automatically when it doesn't receive an
+/// explicit `-s`, so the command reaches that device without having to
+/// rewrite the script's contents.
 class ScriptRunnerService {
   Future<Process> run(ScriptModel script, List<String> params,
       {String? deviceSerial}) async {
@@ -51,7 +51,7 @@ class ScriptRunnerService {
     }
   }
 
-  /// Costruisce una stringa human-readable del comando, da mostrare in console.
+  /// Builds a human-readable command string, to show in the console.
   String buildCommandPreview(ScriptModel script, List<String> params) {
     final name = p.basename(script.path);
     return params.isEmpty ? name : '$name ${params.join(' ')}';

@@ -7,11 +7,11 @@ import '../core/utils/script_parameter_parser.dart';
 import '../models/script_group.dart';
 import '../models/script_model.dart';
 
-/// Scansiona una root folder e ne ricava la lista di [ScriptGroup]:
-/// - ogni sottocartella immediata diventa un gruppo (nome = nome cartella)
-/// - gli script trovati direttamente nella root formano il gruppo
-///   "Generale" (rappresentato con [ScriptGroup.name] vuoto; la
-///   localizzazione dell'etichetta è responsabilità della UI)
+/// Scans a root folder and derives the list of [ScriptGroup] from it:
+/// - each immediate subfolder becomes a group (name = folder name)
+/// - scripts found directly in the root form the "General" group
+///   (represented with an empty [ScriptGroup.name]; localizing the
+///   label is the UI's responsibility)
 class ScriptScannerService {
   Future<List<ScriptGroup>> scanRoot(String rootPath) async {
     final rootDir = Directory(rootPath);
@@ -73,7 +73,7 @@ class ScriptScannerService {
     try {
       content = await file.readAsString();
     } catch (_) {
-      // File binario o non leggibile come testo: nessun parametro rilevabile.
+      // Binary file or not readable as text: no parameter detectable.
       content = '';
     }
 

@@ -6,8 +6,8 @@ repository.
 ## Project
 
 Flutter desktop app (Windows/macOS) for browsing and running ADB scripts organized in folders.
-Source comments and commit/doc language are Italian; keep new inline comments consistent with the
-surrounding file's language.
+Source comments are in English; keep new inline comments consistent with the surrounding file's
+language.
 
 ## Commands
 

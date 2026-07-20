@@ -1,7 +1,7 @@
 import 'package:path/path.dart' as p;
 
-/// Rappresenta una cartella radice scelta dall'utente, contenente
-/// sottocartelle/script ADB.
+/// Represents a root folder chosen by the user, containing ADB
+/// subfolders/scripts.
 class RootFolder {
   const RootFolder(this.path);
 

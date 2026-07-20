@@ -1,19 +1,19 @@
-/// Risultato dell'analisi dei parametri di uno script.
+/// Result of analyzing a script's parameters.
 class ScriptParameterInfo {
   const ScriptParameterInfo({required this.count, required this.placeholders});
 
-  /// Numero di parametri posizionali individuati (es. 2 se trova $1 e $2).
+  /// Number of positional parameters found (e.g. 2 if it finds $1 and $2).
   final int count;
 
-  /// Etichette leggibili dei placeholder, es. ["\$1", "\$2"].
+  /// Human-readable placeholder labels, e.g. ["\$1", "\$2"].
   final List<String> placeholders;
 
   static const empty = ScriptParameterInfo(count: 0, placeholders: []);
 }
 
-/// Analizza il contenuto testuale di uno script per individuare i
-/// parametri posizionali richiesti, sia in stile bash (`$1`, `${2}`)
-/// sia in stile batch/Windows (`%1`, `%2`).
+/// Analyzes a script's text content to detect the positional parameters
+/// it requires, both in bash style (`$1`, `${2}`) and in batch/Windows
+/// style (`%1`, `%2`).
 class ScriptParameterParser {
   const ScriptParameterParser._();
 

@@ -30,13 +30,13 @@ class RootFoldersState {
   }
 }
 
-/// Notifier responsabile di:
-/// - caricare all'avvio le root folder salvate e quella attiva
-/// - aggiungere/rimuovere root folder
-/// - impostare la root folder attiva (quella da cui vengono caricati gli script)
+/// Notifier responsible for:
+/// - loading the saved root folders and the active one on startup
+/// - adding/removing root folders
+/// - setting the active root folder (the one scripts are loaded from)
 ///
-/// Ogni modifica viene persistita immediatamente tramite [StorageService],
-/// così che alla riapertura dell'app l'utente ritrovi le proprie cartelle.
+/// Every change is persisted immediately via [StorageService], so that
+/// the user finds their folders again when reopening the app.
 class RootFoldersNotifier extends StateNotifier<RootFoldersState> {
   RootFoldersNotifier(this._storage) : super(const RootFoldersState()) {
     _init();

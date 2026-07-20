@@ -2,29 +2,28 @@ import 'dart:io';
 
 import '../models/adb_device.dart';
 
-/// Incapsula tutte le chiamate al binario `adb` per la scoperta dei device
-/// connessi. Nessuna gestione di stato o subscription qui: quella è
-/// responsabilità del provider che consuma questo service.
+/// Wraps all calls to the `adb` binary for discovering connected
+/// devices. No state or subscription handling here: that's the
+/// responsibility of the provider that consumes this service.
 class AdbDeviceService {
-  /// Avvia `adb track-devices` come processo persistente. Il chiamante è
-  /// responsabile di ascoltarne lo stdout e di terminarlo quando non serve
-  /// più. Lancia [ProcessException] se `adb` non è nel PATH.
+  /// Starts `adb track-devices` as a persistent process. The caller is
+  /// responsible for listening to its stdout and killing it when no
+  /// longer needed. Throws [ProcessException] if `adb` is not on PATH.
   Future<Process> startTrackDevices() {
     return Process.start('adb', ['track-devices']);
   }
 
-  /// Esegue `adb devices -l` e ne parsa l'output. Lancia [ProcessException]
-  /// se `adb` non è nel PATH.
+  /// Runs `adb devices -l` and parses its output. Throws
+  /// [ProcessException] if `adb` is not on PATH.
   Future<List<AdbDevice>> listDevices() async {
     final result = await Process.run('adb', ['devices', '-l']);
     return _parseDevicesOutput(result.stdout as String);
   }
 
-  /// Interroga la categoria hardware di un device. In caso di qualunque
-  /// errore (device sparito, comando fallito, output vuoto) ritorna
-  /// [AdbDeviceKind.phone] come default sicuro: il chiamante non deve mai
-  /// propagare eccezioni da qui, altrimenti romperebbe il refresh
-  /// periodico della lista device.
+  /// Queries a device's hardware category. On any error (device gone,
+  /// command failed, empty output) returns [AdbDeviceKind.phone] as a
+  /// safe default: the caller must never propagate exceptions from here,
+  /// otherwise it would break the periodic device list refresh.
   Future<AdbDeviceKind> getDeviceKind(String serial) async {
     try {
       final result = await Process.run(
