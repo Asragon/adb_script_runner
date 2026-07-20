@@ -88,65 +88,82 @@ class _ScriptDetailSectionState extends ConsumerState<ScriptDetailSection> {
                 style: theme.textTheme.bodySmall,
               ),
             )
-          : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.description_outlined, size: 18),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          script.name,
-                          style: theme.textTheme.titleSmall,
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Fixed header row: icon + name/path on the left, Run button
+                // on the right. This row never scrolls.
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.description_outlined, size: 18),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            script.name,
+                            style: theme.textTheme.titleSmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            script.path,
+                            style: theme.textTheme.bodySmall
+                                ?.copyWith(color: theme.hintColor),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    _buildRunButton(l10n, script, deviceSerial),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Everything below (parameters + script body) scrolls.
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (script.hasParameters) ...[
+                          Text(l10n.parametersLabel,
+                              style: theme.textTheme.labelMedium),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 12,
+                            runSpacing: 8,
+                            children: _controllersFor(script)
+                                .asMap()
+                                .entries
+                                .map((entry) {
+                              final placeholder =
+                                  script.parameterPlaceholders[entry.key];
+                              return SizedBox(
+                                width: 150,
+                                child: TextField(
+                                  controller: entry.value,
+                                  decoration:
+                                      InputDecoration(labelText: placeholder),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                        Text(
+                          script.body,
+                          style: theme.textTheme.bodySmall
+                              ?.copyWith(color: theme.hintColor),
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    script.path,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(color: theme.hintColor),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 12),
-                  if (script.hasParameters) ...[
-                    Text(l10n.parametersLabel,
-                        style: theme.textTheme.labelMedium),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      children:
-                          _controllersFor(script).asMap().entries.map((entry) {
-                        final placeholder =
-                            script.parameterPlaceholders[entry.key];
-                        return SizedBox(
-                          width: 150,
-                          child: TextField(
-                            controller: entry.value,
-                            decoration: InputDecoration(labelText: placeholder),
-                          ),
-                        );
-                      }).toList(),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                  ],
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: _buildRunButton(l10n, script, deviceSerial),
                   ),
-                  Text(
-                    script.body,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(color: theme.hintColor),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
     );
   }
