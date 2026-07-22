@@ -29,6 +29,7 @@
   "noScriptSelected": "Select a script from the list to see its details",
   "parametersLabel": "Parameters",
   "runScript": "Run",
+  "openContainingFolder": "Open containing folder",
 
   "consoleTitle": "Console",
   "clearConsole": "Clear console",

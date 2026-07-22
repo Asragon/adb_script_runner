@@ -224,6 +224,12 @@ abstract class AppLocalizations {
   /// **'Run'**
   String get runScript;
 
+  /// No description provided for @openContainingFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open containing folder'**
+  String get openContainingFolder;
+
   /// No description provided for @consoleTitle.
   ///
   /// In en, this message translates to:

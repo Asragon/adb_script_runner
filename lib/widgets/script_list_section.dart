@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/utils/reveal_in_explorer.dart';
 import '../core/utils/run_script.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../models/script_group.dart';
@@ -295,7 +296,12 @@ class _ScriptTile extends ConsumerWidget {
       selected: isSelected,
       selectedTileColor:
           theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
-      leading: const Icon(Icons.description_outlined, size: 16),
+      leading: IconButton(
+        icon: const Icon(Icons.description_outlined, size: 18),
+        visualDensity: VisualDensity.compact,
+        tooltip: l10n.openContainingFolder,
+        onPressed: () => revealInExplorer(script.path),
+      ),
       title: Text(script.name, overflow: TextOverflow.ellipsis),
       subtitle: !indent && script.groupName.isNotEmpty
           ? Text(script.groupName, style: const TextStyle(fontSize: 10))

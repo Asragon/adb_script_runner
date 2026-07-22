@@ -28,6 +28,7 @@
   "noScriptSelected": "Seleziona uno script dalla lista per vederne i dettagli",
   "parametersLabel": "Parametri",
   "runScript": "Esegui",
+  "openContainingFolder": "Apri cartella contenitore",
 
   "consoleTitle": "Console",
   "clearConsole": "Pulisci console",

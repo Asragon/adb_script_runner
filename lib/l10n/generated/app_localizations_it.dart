@@ -75,6 +75,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get runScript => 'Esegui';
 
   @override
+  String get openContainingFolder => 'Apri cartella contenitore';
+
+  @override
   String get consoleTitle => 'Console';
 
   @override
