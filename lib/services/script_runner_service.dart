@@ -25,10 +25,15 @@ class ScriptRunnerService {
     final environment =
         deviceSerial == null ? null : {'ANDROID_SERIAL': deviceSerial};
 
+    // Run from the script's own folder so scripts that invoke sibling
+    // scripts with a relative path (e.g. `./ZipTour.sh 999998 002`)
+    // resolve them correctly.
+    final workingDirectory = p.dirname(script.path);
+
     switch (ext) {
       case '.sh':
         return Process.start('bash', [script.path, ...params],
-            environment: environment);
+            environment: environment, workingDirectory: workingDirectory);
       case '.ps1':
         return Process.start(
           'powershell',
@@ -41,13 +46,15 @@ class ScriptRunnerService {
             ...params
           ],
           environment: environment,
+          workingDirectory: workingDirectory,
         );
       case '.bat':
       case '.cmd':
         return Process.start('cmd', ['/c', script.path, ...params],
-            environment: environment);
+            environment: environment, workingDirectory: workingDirectory);
       default:
-        return Process.start(script.path, params, environment: environment);
+        return Process.start(script.path, params,
+            environment: environment, workingDirectory: workingDirectory);
     }
   }
 
