@@ -63,9 +63,9 @@ lib/
 
 - **Execution**: depending on the extension, the script is launched with
   the matching interpreter:
-  - `.sh` → `bash` (requires bash on PATH, e.g. Git Bash or WSL on Windows)
-  - `.ps1` → `powershell -ExecutionPolicy Bypass -File ...`
-  - `.bat` / `.cmd` → `cmd /c ...`
+    - `.sh` → `bash` (requires bash on PATH, e.g. Git Bash or WSL on Windows)
+    - `.ps1` → `powershell -ExecutionPolicy Bypass -File ...`
+    - `.bat` / `.cmd` → `cmd /c ...`
 
   If your `.sh` scripts call `adb` internally, make sure `adb.exe` is on
   the system PATH (or referenced with an absolute path inside the
@@ -82,12 +82,3 @@ lib/
 - **Multilingual support**: add a new language by creating
   `lib/l10n/app_<code>.arb` with the same keys as `app_en.arb`.
 
-## Possible future extensions
-
-- Persistent execution history (today the console log resets when the
-  app closes).
-- Text search/filter in the script list.
-- Display of connected ADB devices (`adb devices`) in a dedicated
-  section.
-- Drag&drop a folder directly onto the window to add it as a root
-  folder.
